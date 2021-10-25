@@ -25,13 +25,13 @@ int main()
 	}
 
 	/* prompt writing to the standard output (console) */
-	write(1, "$> ", 3);
+	write(1, "($) ", 4);
 
 	/* reading STDIN in loop */
 	while (getline(&buffer, &buffer_size, stdin) > 0)
 	{
 		printf("cmd = %s\n", buffer);
-		write(1, "$> ", 3);
+		write(1, "($) ", 4);
 	}
 
 	/* when the user types CTRL + D (abort) */
