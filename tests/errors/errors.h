@@ -4,4 +4,4 @@
 /* error messages */
 const char *MALLOC_FAILED = "Memory allocation failed";
 
-#endif
+#endif /* ERRORS_H */
