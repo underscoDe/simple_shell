@@ -20,14 +20,17 @@ int main(){
     for (argument_length = 0; line_buffer[argument_length] != '\n'; argument_length++);
 
     int i = 0;
-    char arg[argument_length];
+    char *arg = malloc(argument_length * sizeof(char) );// arg[argument_length];
     for (i = 0; ; i++){
          arg[i] = line_buffer[i] != '\n' ? line_buffer[i] : '\0';
          if (line_buffer[i] == '\n')
             break;
     }
 
-    char *argument[] = {arg, NULL};
+    // free memory that is no longer needed
+    free(line_buffer);
+
+    char *arguments[] = {arg, NULL}; // this is where strtok will be used to split arg into arguments in the case where command is to process extra arguments
 
 
     int fork_ntimes = 1;
@@ -55,7 +58,7 @@ int main(){
             puts ("I am forked child, about to execute another program now");
 
             // execute intended program
-            execve(argument[0], argument, NULL);
+            execve(arguments[0], arguments, NULL);
         }
 
     }
