@@ -1,0 +1,2 @@
+#!/bin/bash
+./_which_handler $1:$PATH
