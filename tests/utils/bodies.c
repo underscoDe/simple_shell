@@ -12,26 +12,26 @@
  */
 static char	**split(char *raw_cmd, char *sep)
 {
-    char *strToken = NULL;
-    char **command = NULL;
-    size_t index = 0;
+	char *strToken = NULL;
+	char **command = NULL;
+	size_t index = 0;
 
-    /* split on spaces */
-    strToken = strtok(raw_cmd, sep);
+	/* split on spaces */
+	strToken = strtok(raw_cmd, sep);
 
-    while (strToken)
-    {
-        command = (char **)realloc(command, ((index + 1) * sizeof(char *)));
-        command[index] = strdup(strToken);
-        strToken = strtok(NULL, sep);
-        index++;
-    }
+	while (strToken)
+	{
+		command = (char **)realloc(command, ((index + 1) * sizeof(char *)));
+		command[index] = strdup(strToken);
+		strToken = strtok(NULL, sep);
+		index++;
+	}
 
-    /* allocation of an element set to NULL at the end of the tab */
-    command = (char **)realloc(command, ((index + 1) * sizeof(char *)));
-    command[index] = NULL;
+	/* allocation of an element set to NULL at the end of the tab */
+	command = (char **)realloc(command, ((index + 1) * sizeof(char *)));
+	command[index] = NULL;
 
-    return (command);
+	return (command);
 }
 
 /**
@@ -42,14 +42,14 @@ static char	**split(char *raw_cmd, char *sep)
  */
 static void	free_array(char **array)
 {
-    int i = 0;
+	int i = 0;
 
-    for (; array[i]; i++)
-    {
-        free(array[i]);
-        array[i] = NULL;
-    }
+	for (; array[i]; i++)
+	{
+		free(array[i]);
+		array[i] = NULL;
+	}
 
-    free(array);
-    array = NULL;
+	free(array);
+	array = NULL;
 }
