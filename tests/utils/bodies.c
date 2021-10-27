@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include "headers.h"
 
 /**
  * split - splits command input into parts
@@ -10,7 +11,7 @@
  *
  * Return: splited command input
  */
-static char	**split(char *raw_cmd, char *sep)
+char **split(char *raw_cmd, char *sep)
 {
 	char *strToken = NULL;
 	char **command = NULL;
@@ -40,7 +41,7 @@ static char	**split(char *raw_cmd, char *sep)
  *
  * Return: nothing
  */
-static void	free_array(char **array)
+void free_array(char **array)
 {
 	int i = 0;
 
