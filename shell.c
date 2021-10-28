@@ -50,6 +50,7 @@ int main(int n_args, char **args, char **env)
 
 		printf("cmd = %s\n", buffer);
 
+<<<<<<< HEAD
 		// handle 'exit' command
 		int contains_exit = string_in(buffer, "exit");
 		if (contains_exit)
@@ -59,6 +60,12 @@ int main(int n_args, char **args, char **env)
 		char **buffer_args = split(buffer, " ");  /* get separate arguments */
 		char *command_path = NULL;
 
+=======
+		// ensure command is valid before creating fork
+		char **buffer_args = split(buffer, " ");  /* get separate arguments */
+		char *command_path = NULL;
+
+>>>>>>> 27b1a27195a77fcff29d6f85325f4b9fbbbbd9cf
 		// if null entry (failure to handle this leads to segmentation fault)
 		if (!buffer_args[0])
 		{
