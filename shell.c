@@ -49,7 +49,7 @@ int main(int n_args, char **args, char **env)
 		}
 
 		printf("cmd = %s\n", buffer);
-		write(1, "($) ", 4);
+		
 
 		/* create fork for executing the command entered */
 		child_pid = fork();
@@ -61,6 +61,7 @@ int main(int n_args, char **args, char **env)
 		else if (child_pid > 0)  /* parent of fork */
 		{
 			wait(&wait_status);
+			write(1, "($) ", 4);
 		}
 
 		else if (child_pid == 0)  /* child of fork */
