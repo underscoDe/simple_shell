@@ -61,7 +61,6 @@ int main(int n_args, char **args, char **env)
 		else if (child_pid > 0)  /* parent of fork */
 		{
 			wait(&wait_status);
-			write(1, "($) ", 4);
 		}
 
 		else if (child_pid == 0)  /* child of fork */
@@ -81,7 +80,7 @@ int main(int n_args, char **args, char **env)
 			else // command is invalid, so cast an error
 				perror(INVALID_COMMAND);			
 		}
-			
+		write(1, "($) ", 4);			
 	}
 
 	/* when the user types CTRL + D (abort) */
