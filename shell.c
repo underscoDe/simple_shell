@@ -1,5 +1,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -7,6 +8,7 @@
 #include "tests/errors/errors.h"
 #include <string.h>
 #include "tests/utils/headers.h"
+#include "functions.h"
 
 /**
  * main - Entry point
@@ -14,8 +16,11 @@
  * Return: returns EXIT_FAILURE OF EXIT_SUCCESS
  *
  */
-int main()
+int main(int n_args, char **args, char **env)
 {
+	char *syspath = args[1];
+
+
 	/* buffer will stock the user input command,
 	we'll give it a size of 2048 */
 	char *buffer = NULL;
@@ -62,8 +67,20 @@ int main()
 		else if (child_pid == 0)  /* child of fork */
 		{
 			/* execute the command entered */
-			char **args = split(buffer, " ");  /* get separate arguments */
-			execve(args[0], args, NULL);
+			char **buffer_args = split(buffer, " ");  /* get separate arguments */
+
+			struct stat stat_buffer; // stores a struct of the file information if filepath valid
+			int path_status = stat(buffer_args[0], &stat_buffer); // 0 if path valid else -1
+
+			if (path_status == 0) // command is a valid path
+				execve(buffer_args[0], buffer_args, NULL);
+
+			else if ( (path_status = stat(_which(buffer_args[0], syspath), &stat_buffer) ) == 0) // _which <command> is valid path
+				execve(_which(buffer_args[0], syspath), buffer_args, NULL);
+
+			else // command is invalid, so cast an error
+				perror(INVALID_COMMAND);			
+
 		}
 			
 	}
