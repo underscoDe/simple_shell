@@ -14,8 +14,10 @@
  * Return: returns EXIT_FAILURE OF EXIT_SUCCESS
  *
  */
-int main()
+int main(int n_args, char **args, char **env)
 {
+	char *syspath = "/home/flashxy/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin";
+
 	/* buffer will stock the user input command,
 	we'll give it a size of 2048 */
 	char *buffer = NULL;
@@ -62,8 +64,8 @@ int main()
 		else if (child_pid == 0)  /* child of fork */
 		{
 			/* execute the command entered */
-			char **args = split(buffer, " ");  /* get separate arguments */
-			execve(args[0], args, NULL);
+			char **buffer_args = split(buffer, " ");  /* get separate arguments */
+			execve(buffer_args[0], buffer_args, NULL);
 		}
 			
 	}
