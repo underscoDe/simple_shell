@@ -50,6 +50,11 @@ int main(int n_args, char **args, char **env)
 
 		printf("cmd = %s\n", buffer);
 
+		// handle 'exit' command
+		int contains_exit = string_in(buffer, "exit");
+		if (contains_exit)
+			break;
+
 		// ensure command is valid before creating fork
 		char **buffer_args = split(buffer, " ");  /* get separate arguments */
 		char *command_path = NULL;

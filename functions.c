@@ -67,3 +67,47 @@ char *_which(char *command, char *syspath){
     }
     return "\0";    
 }
+
+/*
+* returns 1 if substring contained in main_string
+* example: "apple" is contained in  "apple  ",   "  apple  "   AND   "  apple"
+*          but not in "napple  ",  "  zapples  "  OR  "  grapple"
+*
+*/
+int string_in(char *main_string, char *sub_string)
+{
+    //exit--------
+    // ----exit--------
+    // ---------exit
+
+    int count_flag = 1;
+
+    int i, j;
+    j = 0;
+
+    int sub_string_length;
+    for (sub_string_length = 0; sub_string[sub_string_length++];);
+    sub_string_length --;
+
+    for (i = 0; main_string[i]; i++)
+    {
+        if ( count_flag && main_string[i] == sub_string[j])
+            j++;
+
+        else if (main_string[i] != sub_string[j] && main_string[i] != ' ')
+        {
+            j = 0;
+            count_flag = 0;
+        }
+
+        else if (main_string[i] == ' ' && j < sub_string_length)
+        {
+            count_flag = 1;
+            j = 0;
+        }
+
+        if (j == sub_string_length && (main_string[i + 1] == ' ' || main_string[i + 1] == '\0'))
+            return 1;
+    }
+    return 0;
+}
