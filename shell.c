@@ -49,39 +49,56 @@ int main(int n_args, char **args, char **env)
 		}
 
 		printf("cmd = %s\n", buffer);
-		
 
-		/* create fork for executing the command entered */
-		child_pid = fork();
-		if (child_pid == -1)  /* fork failure */
-		{
-			write(1, FORK_FAILED, strlen(FORK_FAILED) );
-		}
+		// handle 'exit' command
+		int contains_exit = string_in(buffer, "exit");
+		if (contains_exit)
+			break;
 
-		else if (child_pid > 0)  /* parent of fork */
+		// ensure command is valid before creating fork
+		char **buffer_args = split(buffer, " ");  /* get separate arguments */
+		char *command_path = NULL;
+
+		// if null entry (failure to handle this leads to segmentation fault)
+		if (!buffer_args[0])
 		{
-			wait(&wait_status);
 			write(1, "($) ", 4);
+			continue;
 		}
 
-		else if (child_pid == 0)  /* child of fork */
+		struct stat stat_buffer; // stores a struct of the file information if filepath valid
+		int path_status = stat(buffer_args[0], &stat_buffer); // 0 if path valid else -1
+
+		if (path_status == 0) // command is a valid command path
+			command_path = buffer_args[0];
+
+		else if ( (path_status = stat(_which(buffer_args[0], syspath), &stat_buffer) ) == 0) // _which <command> is a valid command path
+			command_path = _which(buffer_args[0], syspath);
+
+		else // command is invalid, so cast an error
+			perror(INVALID_COMMAND);
+
+		if (command_path)
 		{
-			/* execute the command entered */
-			char **buffer_args = split(buffer, " ");  /* get separate arguments */
+			/* create fork for executing the command entered */
+			child_pid = fork();
+			if (child_pid == -1)  /* fork failure */
+			{
+				write(1, FORK_FAILED, strlen(FORK_FAILED) );
+			}
 
-			struct stat stat_buffer; // stores a struct of the file information if filepath valid
-			int path_status = stat(buffer_args[0], &stat_buffer); // 0 if path valid else -1
+			else if (child_pid > 0)  /* parent of fork */
+			{
+				wait(&wait_status);				
+			}
 
-			if (path_status == 0) // command is a valid path
-				execve(buffer_args[0], buffer_args, NULL);
-
-			else if ( (path_status = stat(_which(buffer_args[0], syspath), &stat_buffer) ) == 0) // _which <command> is valid path
-				execve(_which(buffer_args[0], syspath), buffer_args, NULL);
-
-			else // command is invalid, so cast an error
-				perror(INVALID_COMMAND);			
+			else if (child_pid == 0)  /* child of fork */
+			{
+				/* execute the command entered */
+				execve(command_path, buffer_args, NULL);			
+			}
 		}
-			
+		write(1, "($) ", 4);			
 	}
 
 	/* when the user types CTRL + D (abort) */
