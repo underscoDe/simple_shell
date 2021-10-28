@@ -20,6 +20,7 @@ int main(int n_args, char **args, char **env)
 {
 	char *syspath = args[1];
 
+
 	/* buffer will stock the user input command,
 	we'll give it a size of 2048 */
 	char *buffer = NULL;
@@ -79,6 +80,7 @@ int main(int n_args, char **args, char **env)
 
 			else // command is invalid, so cast an error
 				perror(INVALID_COMMAND);			
+
 		}
 			
 	}
