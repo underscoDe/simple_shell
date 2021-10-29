@@ -114,7 +114,8 @@ int string_in(char *main_string, char *sub_string)
 
 
 /**
- * returns 1 if main_string MATCHES sub_string, else returns 0
+ * returns number of characters of matched sub_string if main_string MATCHES 
+ * sub_string, else returns 0.
  * Does not take leading or trailing whitespace into account,
  * hence it is a 'white-space (w) match' --> hence the name string_w_match
  */
@@ -124,7 +125,7 @@ int string_w_match(char *main_string, char *sub_string)
     // ----exit--------
     // ---------exit
 
-    int count_begun = 0;
+    int match_count = 0;
 
     int i, j;
     j = 0;
@@ -135,23 +136,32 @@ int string_w_match(char *main_string, char *sub_string)
 
     for (i = 0; main_string[i]; i++)
     {
-        if (main_string[i] == ' ' && main_string[i] != sub_string[j] && !count_begun)
+        /* leading whitespace */
+        if (main_string[i] == ' ' && main_string[i] != sub_string[j] && !match_count)
             ;
 
+        /* any non-whitespace character mismatch */
         else if (main_string[i] != sub_string[j] && main_string[i] != ' ')
             return 0;
 
-        else if (main_string[i] != sub_string[j] && count_begun && j < sub_string_length)
+        /* character mismatch */
+        else if (main_string[i] != sub_string[j] && match_count && j < sub_string_length)
             return 0;
 
+        /* trailing whitespace */
         else if (main_string[i] == ' ' && j == sub_string_length)
             ;
 
+        /* character match */
         else if (main_string[i] == sub_string[j])
+        {
             j++;
+            match_count++;
+        }
 
+        /* last none-null character of main_string */
         if (main_string[i + 1] == '\0' && j == sub_string_length)
-            return 1;        
+            return match_count;        
     }
     return 0;
 }
