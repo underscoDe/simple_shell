@@ -51,8 +51,8 @@ int main(int n_args, char **args, char **env)
 		printf("cmd = %s\n", buffer);
 
 		// handle 'exit' command
-		int contains_exit = string_w_match(buffer, "exit");
-		if (contains_exit)
+		int exit_called = string_w_match(buffer, "exit");
+		if (exit_called)
 			break;
 
 		// ensure command is valid before creating fork
