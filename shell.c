@@ -51,9 +51,23 @@ int main(int n_args, char **args, char **env)
 		printf("cmd = %s\n", buffer);
 
 		// handle 'exit' command
-		int contains_exit = string_w_match(buffer, "exit");
-		if (contains_exit)
+		int exit_called = string_w_match(buffer, "exit");
+		if (exit_called)
 			break;
+
+		// handle 'env' built-in
+		int env_called = string_w_match(buffer, "env");
+		if (env_called)
+		{
+			for (i = 0; env[i]; i++)
+			{
+				int line_length;
+				for (line_length = 0; env[i][line_length++];);
+
+				write(1, env[i], line_length);
+				write(1, "\n", 1);
+			}
+		}
 
 		// ensure command is valid before creating fork
 		char **buffer_args = split(buffer, " ");  /* get separate arguments */
