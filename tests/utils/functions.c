@@ -88,3 +88,63 @@ void exec_cmd(char **cmd)
 		exit(EXIT_FAILURE);
 	}
 }
+
+/**
+ * get_absolute_path - get a command's absolute path
+ * @cmd: command
+ *
+ * Return: nothing
+ */
+void get_absolute_path(char **cmd)
+{
+	char *path = strdup(getenv("PATH"));
+	char *bin = NULL;
+	char **path_split = NULL;
+
+	/* if path is null, we create a new path */
+	if (path == NULL)
+		path = strdup("/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin");
+
+	/* if cmd is not the absolute path, we check the absolute path
+	using the environment variable PATH */
+	if (cmd[0][0] != '/' && strncmp(cmd[0], "./", 2) != 0)
+	{
+		// we split the path to find where the binary is
+		path_split = split(path, ":");
+		free(path);
+		path = NULL;
+
+		/* we loop over each folder of the path to get it found */
+		for (int i = 0; path_split[i]; i++)
+		{
+			/* alloc len of path + '/' + len of binary + 1 for the '\0' */
+			bin = (char *)calloc(sizeof(char),
+				(strlen(path_split[i]) + 1 + strlen(cmd[0]) + 1));
+			if (bin == NULL)
+				break;
+
+			/* we concat the path , the '/' and the binary name */
+			strcat(bin, path_split[i]);
+			strcat(bin, "/");
+			strcat(bin, cmd[0]);
+
+			/* we check if the file exists, we quit the loop when access = 0 */
+			if (access(bin, F_OK) == 0)
+				break;
+
+			free(bin);
+			bin = NULL;
+		}
+		free_array(path_split);
+
+		/* we replace the binary with the absolute path
+		or NULL if the binary doesn't exist */
+		free(cmd[0]);
+		cmd[0] = bin;
+	}
+	else
+	{
+		free(path);
+		path = NULL;
+	}
+}
