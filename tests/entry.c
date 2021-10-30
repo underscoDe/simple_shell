@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stddef.h>
+#include <stdbool.h>
 #include "utils/headers.h"
+#include "utils/builtins.h"
 
 /**
  * main - Entry point
@@ -36,8 +38,13 @@ int main()
 
 		if (cmd[0] == NULL)
 			printf("%s\n", "Command not found");
-		else
+		else if (is_built_in(cmd[0]) == false)
+		{
+			get_absolute_path(cmd);
 			exec_cmd(cmd);
+		}
+		else
+			exec_built_in(cmd);
 
 		write(1, "($) ", 4);
 		free_array(cmd);
