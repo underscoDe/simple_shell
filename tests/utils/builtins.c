@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include <linux/limits.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 /**
  * is_built_in - checks whether a command is a builtin or not
