@@ -3,8 +3,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <signal.h>
+#include <sys/wait.h>
 #include "headers.h"
-#include "../errors/errors.h"
 
 /**
  * split - splits command input into parts
@@ -71,7 +71,7 @@ void exec_cmd(char **cmd)
 	/* we duplicate the current process */
 	pid = fork();
 	if (pid == -1)
-		perror(FORK_ERROR);
+		perror("Failed to duplicate process");
 	/* if fork() works, the parent process wait for its child */
 	else if (pid > 0)
 	{
@@ -84,7 +84,7 @@ void exec_cmd(char **cmd)
 	{
 		/* child process executes the command or quit whether execve fails */
 		if (execve(cmd[0], cmd, NULL) == -1)
-			perror(SHELL);
+			perror("Shell");
 		exit(EXIT_FAILURE);
 	}
 }
@@ -148,3 +148,4 @@ void get_absolute_path(char **cmd)
 		path = NULL;
 	}
 }
+
