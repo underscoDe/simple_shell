@@ -6,7 +6,7 @@
  * is_built_in - checks whether a command is a builtin or not
  * @cmd: given command
  *
- * Return: nothing
+ * Return: boolean true when it is, false when it's not
 */
 bool is_built_in(char *cmd)
 {
@@ -19,6 +19,20 @@ bool is_built_in(char *cmd)
 	}
 
 	return (false);
+}
+
+/**
+ * exec_built_in - executes a builtin
+ * @built_in: given builtin
+ *
+ * Return: nothing
+*/
+void exec_built_in(char **built_in)
+{
+	if (!strcmp(built_in[0], "pwd"))
+		built_in_pwd();
+	else if (!strcmp(built_in[0], "cd"))
+		built_in_cd(built_in[1]);
 }
 
 /**
