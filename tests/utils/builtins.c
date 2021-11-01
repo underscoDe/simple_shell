@@ -42,6 +42,39 @@ char *get_env_var(char *var)
 }
 
 /**
+ * add_tail - add an env var to a list end
+ * @var: variable name
+ *
+ * Return: nothing
+*/
+void add_tail(char *var)
+{
+	t_env *ptr = first;
+	t_env *new_node = NULL;
+
+	new_node = (t_env *)calloc(sizeof(t_env), 1);
+	if (new_node == NULL)
+	{
+		printf("Alloc failure\n");
+		return ;
+	}
+
+	new_node->var = var;
+	new_node->next = NULL;
+
+	if (ptr == NULL)
+	{
+		first = new_node;
+	}
+	else
+	{
+		while (ptr->next != NULL)
+			ptr = ptr->next;
+		ptr->next = new_node;
+	}
+}
+
+/**
  * built_in_env - prints env var
  *
  * Return: nothing
