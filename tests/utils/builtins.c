@@ -26,8 +26,8 @@ t_env *first = NULL;
 */
 char *get_env_var(char *var)
 {
-	t_env	*tmp = first;
-	size_t	len = 0;
+	t_env *tmp = first;
+	size_t len = 0;
 
 	len = strlen(var);
 
