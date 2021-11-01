@@ -86,9 +86,11 @@ bool is_built_in(char *cmd)
 void exec_built_in(char **built_in)
 {
 	if (!strcmp(built_in[0], "pwd"))
-		built_in_pwd();
+		printf("%s\n", get_env_var("PWD="));
 	else if (!strcmp(built_in[0], "cd"))
 		built_in_cd(built_in[1]);
+	else if (!strcmp(built_in[0], "env"))
+		built_in_env();
 }
 
 /**
