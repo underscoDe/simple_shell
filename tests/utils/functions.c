@@ -147,5 +147,8 @@ void get_absolute_path(char **cmd)
 		free(path);
 		path = NULL;
 	}
+
+	/* we return true when the binary exists */
+	return (bin == NULL ? false : true);
 }
 
