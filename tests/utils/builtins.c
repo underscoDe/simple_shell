@@ -42,6 +42,22 @@ char *get_env_var(char *var)
 }
 
 /**
+ * built_in_env - prints env var
+ *
+ * Return: nothing
+*/
+void built_in_env(void)
+{
+	t_env *tmp = first;
+
+	while (tmp)
+	{
+		printf("%s\n", tmp->var);
+		tmp = tmp->next;
+	}
+}
+
+/**
  * is_built_in - checks whether a command is a builtin or not
  * @cmd: given command
  *
