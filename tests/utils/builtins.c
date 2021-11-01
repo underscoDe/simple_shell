@@ -82,8 +82,29 @@ void exec_built_in(char **built_in)
 */
 void built_in_cd(char *path)
 {
-	if (chdir(path) == -1) {
-		perror("chdir()");
+	char *oldpwd = NULL;
+	char *pwd = NULL;
+	char *pwd_ptr = NULL;
+
+	if (path == NULL)
+		return;
+
+	if (chdir(path) == 0) {
+		pwd = strrchr(get_env_var("PWD="), '=') + 1;
+		oldpwd = strrchr(get_env_var("OLDPWD="), '=') + 1;
+
+		if (oldpwd != NULL && pwd != NULL) {
+			strcpy(oldpwd, pwd);
+		}
+		if (pwd != NULL) {
+			pwd = &pwd[-strlen("PWD=")];
+			pwd_ptr = built_in_pwd();
+			strcpy(pwd, pwd_ptr);
+			free(pwd_ptr);
+			pwd_ptr = NULL;
+		}
+	} else {
+		perror("chdir");
 	}
 }
 
@@ -92,13 +113,22 @@ void built_in_cd(char *path)
  *
  * Return: nothing
 */
-void built_in_pwd(void)
+char *built_in_pwd(void)
 {
-	char cwd[PATH_MAX];
+	char *cwd = NULL;
 
-	if (getcwd(cwd, sizeof(cwd)) != NULL) {
-		   printf("%s\n", cwd);
-	} else {
+	/* we allocate : PWD= + PATH_MAX + 1 for \0 ending char */
+	cwd = (char *)calloc(sizeof(char), PATH_MAX + strlen("PWD=") + 1);
+	if (cwd == NULL)
+		return (NULL);
+
+	/* we concat the var name */
+	strcat(cwd, "PWD=");
+
+	/* then we stock current path after the = of PATH= */
+	if (getcwd(&cwd[4], PATH_MAX) == NULL) {
 		perror("getcwd()");
 	}
+
+	return (cwd);
 }
