@@ -6,6 +6,42 @@
 #include "builtins.h"
 
 /**
+ * struct s_env - Environment variables
+ * @var: element
+ * @next: pointer to next element
+ */
+typedef struct s_env
+{
+	char *var;
+	struct s_env *next;
+}t_env;
+
+t_env *first = NULL;
+
+/**
+ * get_env_var - helps get env variable
+ * @var: variable name
+ *
+ * Return: variable
+*/
+char *get_env_var(char *var)
+{
+	t_env	*tmp = first;
+	size_t	len = 0;
+
+	len = strlen(var);
+
+	while (tmp)
+	{
+		if (!strncmp(var, tmp->var, len))
+			return (tmp->var);
+
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+/**
  * is_built_in - checks whether a command is a builtin or not
  * @cmd: given command
  *
@@ -44,7 +80,7 @@ void exec_built_in(char **built_in)
  *
  * Return: nothing
 */
-void	built_in_cd(char *path)
+void built_in_cd(char *path)
 {
 	if (chdir(path) == -1) {
 		perror("chdir()");
