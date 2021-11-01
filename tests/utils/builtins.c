@@ -111,7 +111,7 @@ void built_in_cd(char *path)
 /**
  * built_in_pwd - prints the working directory
  *
- * Return: nothing
+ * Return: current working dir
 */
 char *built_in_pwd(void)
 {

@@ -94,7 +94,7 @@ void exec_cmd(char **cmd)
  * get_absolute_path - get a command's absolute path
  * @cmd: command
  *
- * Return: nothing
+ * Return: true or false whether binary exist or not
  */
 bool get_absolute_path(char **cmd)
 {
