@@ -67,8 +67,9 @@ bool is_built_in(char *cmd)
 {
 	/* this list will be update as we add new builtins */
 	const char *built_in[] = {"pwd", "cd", "env", NULL};
+	int i = 0;
 
-	for (int i = 0; built_in[i]; i++) {
+	for (; built_in[i]; i++) {
 		if (!strcmp(built_in[i], cmd))
 			return (true);
 	}
