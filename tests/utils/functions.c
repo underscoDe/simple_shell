@@ -4,6 +4,7 @@
 #include <string.h>
 #include <signal.h>
 #include <sys/wait.h>
+#include <stdbool.h>
 #include "headers.h"
 
 /**
@@ -95,11 +96,12 @@ void exec_cmd(char **cmd)
  *
  * Return: nothing
  */
-void get_absolute_path(char **cmd)
+bool get_absolute_path(char **cmd)
 {
 	char *path = strdup(getenv("PATH"));
 	char *bin = NULL;
 	char **path_split = NULL;
+	int i = 0;
 
 	/* if path is null, we create a new path */
 	if (path == NULL)
@@ -115,7 +117,7 @@ void get_absolute_path(char **cmd)
 		path = NULL;
 
 		/* we loop over each folder of the path to get it found */
-		for (int i = 0; path_split[i]; i++)
+		for (; path_split[i]; i++)
 		{
 			/* alloc len of path + '/' + len of binary + 1 for the '\0' */
 			bin = (char *)calloc(sizeof(char),
