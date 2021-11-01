@@ -50,7 +50,7 @@ char *get_env_var(char *var)
 bool is_built_in(char *cmd)
 {
 	/* this list will be update as we add new builtins */
-	const char *built_in[] = {"pwd", "cd", NULL};
+	const char *built_in[] = {"pwd", "cd", "env", NULL};
 
 	for (int i = 0; built_in[i]; i++) {
 		if (!strcmp(built_in[i], cmd))
