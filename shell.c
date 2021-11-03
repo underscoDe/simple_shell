@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stddef.h>
-#include "tests/errors/errors.h"
 #include <string.h>
 #include "tests/utils/headers.h"
 #include "functions.h"
@@ -28,7 +27,7 @@ int main(int n_args, char **args, char **env)
 	pid_t child_pid;
 	int i;
 
-	buffer = (char *)calloc(sizeof(char), buffer_size);
+	buffer = (char *)malloc(sizeof(char) * buffer_size);
 	if (buffer == NULL)
 	{
 		perror(MALLOC_FAILED);

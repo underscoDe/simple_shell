@@ -1,5 +1,6 @@
 #ifndef HEADERS_H
 #define HEADERS_H
+#include <stdbool.h>
 
 char **split(char *raw_cmd, char *limit);
 void free_array(char **array);
