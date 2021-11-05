@@ -46,7 +46,7 @@ void add_tail(char *var)
 	if (new_node == NULL)
 	{
 		printf("Alloc failure\n");
-		return ;
+		return;
 	}
 
 	new_node->var = var;
@@ -82,7 +82,7 @@ void add_env_var(char *var)
 		if (alloc == NULL)
 		{
 			fprintf(stderr, "Cannot add HOME\n");
-			return ;
+			return;
 		}
 		strcat(alloc, "HOME=");
 		strcat(alloc, pw->pw_dir);
@@ -93,7 +93,7 @@ void add_env_var(char *var)
 		if (alloc == NULL)
 		{
 			fprintf(stderr, "Cannot add PATH\n");
-			return ;
+			return;
 		}
 	}
 	else if (!strcmp(var, "OLDPWD"))
@@ -102,7 +102,7 @@ void add_env_var(char *var)
 		if (alloc == NULL)
 		{
 			fprintf(stderr, "Cannot add OLDPWD\n");
-			return ;
+			return;
 		}
 	}
 	else if (!strcmp(var, "PWD"))
@@ -111,7 +111,7 @@ void add_env_var(char *var)
 		if (alloc == NULL)
 		{
 			fprintf(stderr, "Cannot add PWD\n");
-			return ;
+			return;
 		}
 	}
 	else if (!strcmp(var, "SHLVL"))
@@ -120,7 +120,7 @@ void add_env_var(char *var)
 		if (alloc == NULL)
 		{
 			fprintf(stderr, "Cannot add OLDPWD\n");
-			return ;
+			return;
 		}
 	}
 
@@ -141,20 +141,27 @@ void dup_env(char **envp)
 	ssize_t	nb_elem = 5;
 
 	/* loop over env and stock variable in the list */
-	for (; envp[i]; i++) {
+	for (; envp[i]; i++)
+	{
 		add_tail(strdup(envp[i]));
 
 		/* we check if we have the minimal env vars */
-		if (!strncmp(envp[i], "PATH", 4)) var_lst[0] = NULL;
-		else if (!strncmp(envp[i], "HOME", 4)) var_lst[1] = NULL;
-		else if (!strncmp(envp[i], "OLDPWD", 6)) var_lst[2] = NULL;
-		else if (!strncmp(envp[i], "PWD", 3)) var_lst[3] = NULL;
-		else if (!strncmp(envp[i], "SHLVL", 5)) var_lst[4] = NULL;
+		if (!strncmp(envp[i], "PATH", 4))
+			var_lst[0] = NULL;
+		else if (!strncmp(envp[i], "HOME", 4))
+			var_lst[1] = NULL;
+		else if (!strncmp(envp[i], "OLDPWD", 6))
+			var_lst[2] = NULL;
+		else if (!strncmp(envp[i], "PWD", 3))
+			var_lst[3] = NULL;
+		else if (!strncmp(envp[i], "SHLVL", 5))
+			var_lst[4] = NULL;
 	}
 
-	/* do we have PATH, HOME, OLD_PWD and SHLVL ?
-	we add them if we don't */
-	for (i = 0; i < nb_elem; i++) {
+	/* do we have PATH, HOME, OLD_PWD and SHLVL ? */
+	/* we add them if we don't */
+	for (i = 0; i < nb_elem; i++)
+	{
 		if (var_lst[i] != NULL)
 			add_env_var(var_lst[i]);
 	}
@@ -172,16 +179,18 @@ char **lst_to_array()
 	t_env *tmp = first;
 	size_t index = 0;
 
-	/* we count the number of elements in the list
-	to allocate an array of pointers where each pointer points to the env */
-	while (tmp) {
+	/* we count the number of elements in the list */
+	/* to allocate an array of pointers where each pointer points to the env */
+	while (tmp)
+	{
 		index++;
-		tmp= tmp->next;
+		tmp = tmp->next;
 	}
 
 	/* allocation + 1 for the NULL ending element */
 	array = (char **)calloc(sizeof(char *), index + 1);
-	if (array == NULL) {
+	if (array == NULL)
+	{
 		perror("calloc");
 		exit(-1);
 	}
@@ -191,7 +200,8 @@ char **lst_to_array()
 	index = 0;
 
 	/* we make each pointer point on our env */
-	while (tmp) {
+	while (tmp)
+	{
 		array[index] = tmp->var;
 		tmp = tmp->next;
 		index++;
@@ -211,7 +221,8 @@ void free_lst(void)
 	t_env *index = first;
 	t_env *tmp = index;
 
-	while (index != NULL) {
+	while (index != NULL)
+	{
 		tmp = index;
 		index = index->next;
 		free(tmp->var);
@@ -250,7 +261,8 @@ bool is_built_in(char *cmd)
 	const char *built_in[] = {"pwd", "cd", "env", NULL};
 	int i = 0;
 
-	for (; built_in[i]; i++) {
+	for (; built_in[i]; i++)
+	{
 		if (!strcmp(built_in[i], cmd))
 			return (true);
 	}
@@ -289,21 +301,26 @@ void built_in_cd(char *path)
 	if (path == NULL)
 		return;
 
-	if (chdir(path) == 0) {
+	if (chdir(path) == 0)
+	{
 		pwd = strrchr(get_env_var("PWD="), '=') + 1;
 		oldpwd = strrchr(get_env_var("OLDPWD="), '=') + 1;
 
-		if (oldpwd != NULL && pwd != NULL) {
+		if (oldpwd != NULL && pwd != NULL)
+		{
 			strcpy(oldpwd, pwd);
 		}
-		if (pwd != NULL) {
+		if (pwd != NULL)
+		{
 			pwd = &pwd[-strlen("PWD=")];
 			pwd_ptr = built_in_pwd();
 			strcpy(pwd, pwd_ptr);
 			free(pwd_ptr);
 			pwd_ptr = NULL;
 		}
-	} else {
+	}
+	else
+	{
 		perror("chdir");
 	}
 }
@@ -326,7 +343,8 @@ char *built_in_pwd(void)
 	strcat(cwd, "PWD=");
 
 	/* then we stock current path after the = of PATH= */
-	if (getcwd(&cwd[4], PATH_MAX) == NULL) {
+	if (getcwd(&cwd[4], PATH_MAX) == NULL)
+	{
 		perror("getcwd()");
 	}
 
