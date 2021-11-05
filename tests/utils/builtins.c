@@ -139,6 +139,39 @@ void add_env_var(char *var)
 }
 
 /**
+ * dup_env - duplicate an env var
+ * @envp: env var list
+ *
+ * Return: nothing
+*/
+void dup_env(char **envp)
+{
+	int i = 0;
+	char *var_lst[] = {"PATH", "HOME", "OLDPWD", "PWD", "SHLVL", NULL};
+	/* number of elements in var_lst */
+	ssize_t	nb_elem = 5;
+
+	/* loop over env and stock variable in the list */
+	for (; envp[i]; i++) {
+		add_tail(strdup(envp[i]));
+
+		/* we check if we have the minimal env vars */
+		if (!strncmp(envp[i], "PATH", 4)) var_lst[0] = NULL;
+		else if (!strncmp(envp[i], "HOME", 4)) var_lst[1] = NULL;
+		else if (!strncmp(envp[i], "OLDPWD", 6)) var_lst[2] = NULL;
+		else if (!strncmp(envp[i], "PWD", 3)) var_lst[3] = NULL;
+		else if (!strncmp(envp[i], "SHLVL", 5)) var_lst[4] = NULL;
+	}
+
+	/* do we have PATH, HOME, OLD_PWD and SHLVL ?
+	we add them if we don't */
+	for (i = 0; i < nb_elem; i++) {
+		if (var_lst[i] != NULL)
+			add_env_var(var_lst[i]);
+	}
+}
+
+/**
  * built_in_env - prints env var
  *
  * Return: nothing
