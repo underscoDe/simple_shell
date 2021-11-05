@@ -171,6 +171,11 @@ void dup_env(char **envp)
 	}
 }
 
+/**
+ * lst_to_array - list to array
+ *
+ * Return: array of env vars
+*/
 char **lst_to_array()
 {
 	char **array = NULL;
@@ -205,6 +210,11 @@ char **lst_to_array()
 	return (array);
 }
 
+/**
+ * free_lst - free linked list
+ *
+ * Return: nothing
+*/
 void free_lst(void)
 {
 	t_env *index = first;
