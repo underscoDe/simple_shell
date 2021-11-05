@@ -1,6 +1,17 @@
 #ifndef BUILTINS_H
 #define BUILTINS_H
 
+/**
+ * struct s_env - Environment variables
+ * @var: element
+ * @next: pointer to next element
+ */
+typedef struct s_env
+{
+    char *var;
+    struct s_env *next;
+}t_env;
+
 bool is_built_in(char *cmd);
 void exec_built_in(char **built_in);
 

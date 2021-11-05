@@ -7,19 +7,6 @@
 #include "builtins.h"
 
 /**
- * struct s_env - Environment variables
- * @var: element
- * @next: pointer to next element
- */
-typedef struct s_env
-{
-	char *var;
-	struct s_env *next;
-}t_env;
-
-t_env *first = NULL;
-
-/**
  * get_env_var - helps get env variable
  * @var: variable name
  *
@@ -27,6 +14,7 @@ t_env *first = NULL;
 */
 char *get_env_var(char *var)
 {
+	t_env *first = NULL;
 	t_env *tmp = first;
 	size_t len = 0;
 
@@ -50,6 +38,7 @@ char *get_env_var(char *var)
 */
 void add_tail(char *var)
 {
+	t_env *first = NULL;
 	t_env *ptr = first;
 	t_env *new_node = NULL;
 
@@ -178,6 +167,7 @@ void dup_env(char **envp)
 */
 char **lst_to_array()
 {
+	t_env *first = NULL;
 	char **array = NULL;
 	t_env *tmp = first;
 	size_t index = 0;
@@ -217,6 +207,7 @@ char **lst_to_array()
 */
 void free_lst(void)
 {
+	t_env *first = NULL;
 	t_env *index = first;
 	t_env *tmp = index;
 
@@ -237,6 +228,7 @@ void free_lst(void)
 */
 void built_in_env(void)
 {
+	t_env *first = NULL;
 	t_env *tmp = first;
 
 	while (tmp)
