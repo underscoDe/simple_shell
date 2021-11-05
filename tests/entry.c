@@ -9,48 +9,65 @@
 /**
  * main - Entry point
  *
- * Return: returns EXIT_FAILURE OF EXIT_SUCCESS
+ * Return: returns 0
  *
  */
-int main()
+int	main(int argc, char **argv, char **envp)
 {
-	/* buffer will stock the user input command,
-	we'll give it a size of 2048 */
 	char *buffer = NULL;
-	size_t buffer_size = 2048;
-	char	**cmd = NULL;
+	size_t buf_size = 2048;
+	char **cmd = NULL;
+	char **env = NULL;
 
-	buffer = (char *)calloc(sizeof(char), buffer_size);
-	if (buffer == NULL)
-	{
-		perror("Memory allocation failed");
+	dup_env(envp);
+
+	/* allocate buffer to stock user input */
+	buffer = (char *)calloc(sizeof(char), buf_size);
+	if (buffer == NULL) {
+		perror("Malloc failure");
 		return (EXIT_FAILURE);
 	}
 
-	/* prompt writing to the standard output (console) */
+	/* prompt */
 	write(1, "($) ", 4);
 
 	/* reading STDIN in loop */
-	while (getline(&buffer, &buffer_size, stdin) > 0)
+	while (getline(&buffer, &buf_size, stdin) > 0)
 	{
 		cmd = split(buffer, " \n\t");
-		get_absolute_path(cmd);
 
 		if (cmd[0] == NULL)
-			printf("%s\n", "Command not found");
-		else if (is_built_in(cmd[0]) == false)
+			fprintf(stderr, "Command not found\n");
+		else if (is_built_in(cmd[0]) == true)
 		{
-			get_absolute_path(cmd);
-			exec_cmd(cmd);
+			exec_built_in(cmd);
 		}
 		else
-			exec_built_in(cmd);
+		{
+			env = lst_to_array();
+			if (get_absolute_path(cmd, env) == true)
+			{
+				exec_cmd(cmd, env);
+			}
+			else
+			{
+				fprintf(stderr, "Command not found\n");
+			}
+			free(env);
+			env = NULL;
+		}
 
 		write(1, "($) ", 4);
 		free_array(cmd);
+
 	}
 
-	/* when the user types CTRL + D (abort) */
-	printf("Bye !\n");
+	free_lst();
+	printf("Bye \n");
 	free(buffer);
+
+	(void)argc;
+	(void)argv;
+
+	return (0);
 }
