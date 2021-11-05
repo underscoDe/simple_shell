@@ -9,10 +9,13 @@
 /**
  * main - Entry point
  *
- * Return: returns 0
+ * @argc: number of arguments
+ * @argv: arguments list
+ * @envp: environment
  *
+ * Return: returns 0
  */
-int	main(int argc, char **argv, char **envp)
+int main(int argc, char **argv, char **envp)
 {
 	char *buffer = NULL;
 	size_t buf_size = 2048;
@@ -23,7 +26,8 @@ int	main(int argc, char **argv, char **envp)
 
 	/* allocate buffer to stock user input */
 	buffer = (char *)calloc(sizeof(char), buf_size);
-	if (buffer == NULL) {
+	if (buffer == NULL)
+	{
 		perror("Malloc failure");
 		return (EXIT_FAILURE);
 	}
@@ -59,7 +63,6 @@ int	main(int argc, char **argv, char **envp)
 
 		write(1, "($) ", 4);
 		free_array(cmd);
-
 	}
 
 	free_lst();
