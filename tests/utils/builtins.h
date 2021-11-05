@@ -13,5 +13,6 @@ void add_tail(char *var);
 void add_env_var(char *var);
 void dup_env(char **envp);
 char **lst_to_array();
+void free_lst(void);
 
 #endif /* BUILTINS_H */

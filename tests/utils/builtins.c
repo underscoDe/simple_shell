@@ -205,6 +205,21 @@ char **lst_to_array()
 	return (array);
 }
 
+void free_lst(void)
+{
+	t_env *index = first;
+	t_env *tmp = index;
+
+	while (index != NULL) {
+		tmp = index;
+		index = index->next;
+		free(tmp->var);
+		tmp->var = NULL;
+		free(tmp);
+		tmp = NULL;
+	}
+}
+
 /**
  * built_in_env - prints env var
  *
