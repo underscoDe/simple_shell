@@ -10,5 +10,6 @@ void built_in_env(void);
 
 char *get_env_var(char *var);
 void add_tail(char *var);
+void add_env_var(char *var);
 
 #endif /* BUILTINS_H */

@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <pwd.h>
 #include "builtins.h"
 
 /**
@@ -72,6 +73,69 @@ void add_tail(char *var)
 			ptr = ptr->next;
 		ptr->next = new_node;
 	}
+}
+
+/**
+ * add_env_var - add a new env var
+ * @var: variable name
+ *
+ * Return: nothing
+*/
+void add_env_var(char *var)
+{
+	struct passwd *pw = getpwuid(getuid());
+	char *alloc = NULL;
+
+	if (!strcmp(var, "HOME"))
+	{
+		alloc = (char *)calloc(sizeof(char),
+			strlen(pw->pw_dir) + strlen("HOME=") + 1);
+		if (alloc == NULL)
+		{
+			fprintf(stderr, "Cannot add HOME\n");
+			return ;
+		}
+		strcat(alloc, "HOME=");
+		strcat(alloc, pw->pw_dir);
+	}
+	else if (!strcmp(var, "PATH"))
+	{
+		alloc = strdup("PATH=/bin:/usr/bin");
+		if (alloc == NULL)
+		{
+			fprintf(stderr, "Cannot add PATH\n");
+			return ;
+		}
+	}
+	else if (!strcmp(var, "OLDPWD"))
+	{
+		alloc = strdup("OLDPWD=");
+		if (alloc == NULL)
+		{
+			fprintf(stderr, "Cannot add OLDPWD\n");
+			return ;
+		}
+	}
+	else if (!strcmp(var, "PWD"))
+	{
+		alloc = built_in_pwd();
+		if (alloc == NULL)
+		{
+			fprintf(stderr, "Cannot add PWD\n");
+			return ;
+		}
+	}
+	else if (!strcmp(var, "SHLVL"))
+	{
+		alloc = strdup("SHLVL=1");
+		if (alloc == NULL)
+		{
+			fprintf(stderr, "Cannot add OLDPWD\n");
+			return ;
+		}
+	}
+
+	add_tail(alloc);
 }
 
 /**
