@@ -12,5 +12,6 @@ char *get_env_var(char *var);
 void add_tail(char *var);
 void add_env_var(char *var);
 void dup_env(char **envp);
+char **lst_to_array();
 
 #endif /* BUILTINS_H */

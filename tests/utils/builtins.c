@@ -171,6 +171,40 @@ void dup_env(char **envp)
 	}
 }
 
+char **lst_to_array()
+{
+	char **array = NULL;
+	t_env *tmp = first;
+	size_t index = 0;
+
+	/* we count the number of elements in the list
+	to allocate an array of pointers where each pointer points to the env */
+	while (tmp) {
+		index++;
+		tmp= tmp->next;
+	}
+
+	/* allocation + 1 for the NULL ending element */
+	array = (char **)calloc(sizeof(char *), index + 1);
+	if (array == NULL) {
+		perror("calloc");
+		exit(-1);
+	}
+
+	/* reset of variables */
+	tmp = first;
+	index = 0;
+
+	/* we make each pointer point on our env */
+	while (tmp) {
+		array[index] = tmp->var;
+		tmp = tmp->next;
+		index++;
+	}
+
+	return (array);
+}
+
 /**
  * built_in_env - prints env var
  *
