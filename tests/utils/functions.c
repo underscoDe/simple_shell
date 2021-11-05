@@ -95,51 +95,62 @@ void exec_cmd(char **cmd, char **env)
  *
  * Return: true or false whether binary exist or not
  */
-bool get_absolute_path(char **cmd)
+bool get_absolute_path(char **cmd, char **env)
 {
-	char *path = strdup(getenv("PATH"));
+	char *path = NULL;
 	char *bin = NULL;
 	char **path_split = NULL;
+	size_t idx = 0;
 	int i = 0;
 
-	/* if path is null, we create a new path */
-	if (path == NULL)
-		path = strdup("/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin");
-
-	/* if cmd is not the absolute path, we check the absolute path
-	using the environment variable PATH */
+	/* if cmd isn't the absolute path, we search the absolute
+	path of the binary using PATH env var */
 	if (cmd[0][0] != '/' && strncmp(cmd[0], "./", 2) != 0)
 	{
-		// we split the path to find where the binary is
+
+		/* we search the PATH ; if we don't find it,
+		we can't concatenate then we exit */
+		for (; env[i]; i++)
+		{
+			if (!strncmp(env[i], "PATH=", 5))
+			{
+				path = strdup(&env[i][5]);
+				break ;
+			}
+		}
+		if (path == NULL)
+			return (false);
+
+		/* we split the path to find the binary */
 		path_split = split(path, ":");
 		free(path);
 		path = NULL;
 
-		/* we loop over each folder of the path to get it found */
-		for (; path_split[i]; i++)
-		{
-			/* alloc len of path + '/' + len of binary + 1 for the '\0' */
+		/* we loop over each folder of the path to find the binary */
+		for (idx = 0; path_split[idx]; idx++) {
+			/* path length + '/' + binary length + 1 (for '\0') */
 			bin = (char *)calloc(sizeof(char),
-				(strlen(path_split[i]) + 1 + strlen(cmd[0]) + 1));
+				(strlen(path_split[idx]) + 1 + strlen(cmd[0]) + 1));
 			if (bin == NULL)
-				break;
+				break ;
 
-			/* we concat the path , the '/' and the binary name */
-			strcat(bin, path_split[i]);
+			/* we concat the path, the '/' and the binary name */
+			strcat(bin, path_split[idx]);
 			strcat(bin, "/");
 			strcat(bin, cmd[0]);
 
-			/* we check if the file exists, we quit the loop when access = 0 */
+			/* return 0 if the file doesn't exist */
 			if (access(bin, F_OK) == 0)
-				break;
+				break ;
 
+			/* no waste of memory :D */
 			free(bin);
 			bin = NULL;
 		}
 		free_array(path_split);
 
 		/* we replace the binary with the absolute path
-		or NULL if the binary doesn't exist */
+		or NULL of it doesn't exist */
 		free(cmd[0]);
 		cmd[0] = bin;
 	}
@@ -149,7 +160,6 @@ bool get_absolute_path(char **cmd)
 		path = NULL;
 	}
 
-	/* we return true when the binary exists */
+	/* if the binary exists, return true */
 	return (bin == NULL ? false : true);
 }
-
