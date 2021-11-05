@@ -63,7 +63,7 @@ void free_array(char **array)
  *
  * Return: nothing
  */
-void exec_cmd(char **cmd)
+void exec_cmd(char **cmd, char **env)
 {
 	pid_t pid = 0;
 	int status = 0;
@@ -83,8 +83,8 @@ void exec_cmd(char **cmd)
 	else
 	{
 		/* child process executes the command or quit whether execve fails */
-		if (execve(cmd[0], cmd, NULL) == -1)
-			perror("Shell");
+		if (execve(cmd[0], cmd, env) == -1)
+			perror("Shell error");
 		exit(EXIT_FAILURE);
 	}
 }

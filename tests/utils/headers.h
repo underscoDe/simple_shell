@@ -4,7 +4,7 @@
 
 char **split(char *raw_cmd, char *limit);
 void free_array(char **array);
-void exec_cmd(char **cmd);
+void exec_cmd(char **cmd, char **env);
 bool get_absolute_path(char **cmd);
 
 #endif /* HEADERS_H */
