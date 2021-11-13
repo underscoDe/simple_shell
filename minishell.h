@@ -51,4 +51,7 @@ alias_t *aliases;
 
 void signal_handler(int fildes);
 
+/*====== environment helpers ======*/
+char **getenvcopy(void);
+
 #endif /* _MINISHELL_H_ */
