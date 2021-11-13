@@ -1,3 +1,4 @@
+#include "minishell.h"
 /**
  * main - Entry point
  *
@@ -5,7 +6,7 @@
  * @argv: arguments list
  * @envp: environment
  *
- * Return: returns 0
+ * Return: returns the value of the last executed command
  */
 int main(int argc, char **argv, char **envp)
 {
