@@ -1,6 +1,7 @@
 #include "minishell.h"
 #include <stddef.h>
 #include <signal.h>
+#include <stdlib.h>
 
 /**
  * main - entry point
@@ -23,13 +24,17 @@ int main(int argc, char **argv)
     hist = 1;
     /* initialize aliases to NULL */
     aliases = NULL;
-    /* send SIGINT signal to print a new prompt */
+
     signal(SIGINT, signal_handler);
 
-    /* initialize retnval to 0 */
     *retnval_ptr = 0;
     /* get a copy of the environment variable */
     environ = getenvcopy();
+
+    if (!environ)
+        exit(EXIT_FAILURE);
+
+
 
     return (0);
 }
