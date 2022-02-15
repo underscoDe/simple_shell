@@ -1,15 +1,16 @@
 #ifndef _MINISHELL_H_
 #define _MINISHELL_H_
 
-#define END_OF_FILE -2;
-#define EXIT -3;
+#include <stddef.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <unistd.h>
+
 
 /* global environemnt */
 extern char **environ;
 /* global program name */
 char *name;
-/* global history counter */
-int hist;
 
 /**
  * struct list_s - struct defining a linked list
@@ -51,7 +52,6 @@ alias_t *aliases;
 
 void signal_handler(int fildes);
 
-/*====== environment helpers ======*/
 char **getenvcopy(void);
 
 #endif /* _MINISHELL_H_ */
