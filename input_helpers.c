@@ -13,7 +13,7 @@ char *get_user_input()
 
     if (!input)
     {
-        (*handle_error[memalloc])();
+        (*handle_error[MEMALLOC])();
     }
 
     while (true)
@@ -39,7 +39,7 @@ char *get_user_input()
 
             if (!input)
             {
-                (*handle_error[memalloc])();
+                (*handle_error[MEMALLOC])();
             }
         }
     }
