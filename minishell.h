@@ -5,6 +5,8 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
+#include <stdio.h>
 
 #include "typedefs.h"
 #include "constants.h"
@@ -18,5 +20,6 @@ char *name;
 alias_t *aliases;
 
 void signal_handler(int fildes);
+char *get_user_input();
 
 #endif /* _MINISHELL_H_ */

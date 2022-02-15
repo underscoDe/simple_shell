@@ -6,7 +6,8 @@
  * @false: 0
  * @true: 1
  */
-typedef enum _bool {
+typedef enum _bool
+{
     false = 0,
     true = 1
 } Bool;
