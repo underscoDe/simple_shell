@@ -8,40 +8,18 @@
  */
 char *get_user_input()
 {
-    int bufsize = BUFFER_SIZE, pos = 0, c;
-    char *input = malloc(bufsize * sizeof(char));
+    char *input = NULL;
+    size_t len = 0;
 
-    if (!input)
+    if (getline(&input, &len, stdin) == -1)
     {
-        (*handle_error[MEMALLOC])();
-    }
-
-    while (true)
-    {
-        c = getchar();
-
-        if (c == EOF || c == '\n')
-        {
-            input[pos] = '\0';
-
-            return (input);
-        }
+        if (feof(stdin)) exit(EXIT_SUCCESS);
         else
         {
-            input[pos] = c;
-        }
-        pos++;
-
-        if (pos >= bufsize)
-        {
-            bufsize += BUFFER_SIZE;
-            input = realloc(input, bufsize);
-
-            if (!input)
-            {
-                (*handle_error[MEMALLOC])();
-            }
+            (*handle_error[READLINE])();
         }
     }
+
+    return (input);
 
 }

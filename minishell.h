@@ -26,11 +26,11 @@ void signal_handler(int);
 char *get_user_input();
 
 /* helpers errors handling */
-/* 0 : memalloc_error */
-void memalloc_error(void);
+/* 0 : readline_error */
+void readline_error(void);
 
 void (*handle_error[])(void) = {
-    memalloc_error
+    readline_error
 };
 
 #endif /* _MINISHELL_H_ */

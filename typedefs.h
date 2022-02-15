@@ -14,7 +14,7 @@ typedef enum _bool
 
 typedef enum errors
 {
-    MEMALLOC = 0
+    READLINE = 0
 } Errors;
 
 /**

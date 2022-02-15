@@ -1,13 +1,13 @@
 #include "minishell.h"
 
 /**
- * memalloc_error - Memory allocation error
+ * readline_error - User input reading error
  *
  * Return: nothing
  */
-void memalloc_error(void)
+void readline_error(void)
 {
-    char *err = strcat(strcat(name, ": "), MEM_ALLOCATION_ERROR);
+    char *err = strcat(strcat(name, ": "), READLINE_ERROR);
 
     write(2, err, strlen(err));
     exit(EXIT_FAILURE);
