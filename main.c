@@ -16,6 +16,8 @@ int main(int argc, char **argv)
     char prompt[] = "(hsh) ";
     Bool status = true;
 
+    name = (argv[0] != NULL) ? argv[0] : NULL;
+
     while (status)
     {
         write(1, prompt, strlen(prompt));

@@ -11,7 +11,10 @@ char *get_user_input()
     int bufsize = BUFFER_SIZE, pos = 0, c;
     char *input = malloc(bufsize * sizeof(char));
 
-    if (!input) return (NULL);
+    if (!input)
+    {
+        (*handle_error[memalloc])();
+    }
 
     while (true)
     {
@@ -34,7 +37,10 @@ char *get_user_input()
             bufsize += BUFFER_SIZE;
             input = realloc(input, bufsize);
 
-            if (!input) return (NULL);
+            if (!input)
+            {
+                (*handle_error[memalloc])();
+            }
         }
     }
 

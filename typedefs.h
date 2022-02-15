@@ -12,6 +12,11 @@ typedef enum _bool
     true = 1
 } Bool;
 
+typedef enum errors
+{
+    MEMALLOC = 0
+} Errors;
+
 /**
  * struct list_s - struct defining a linked list
  * @dir: a directory path

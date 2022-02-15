@@ -19,7 +19,18 @@ char *name;
 /* global aliases linked list */
 alias_t *aliases;
 
-void signal_handler(int fildes);
+/* signals and processes */
+void signal_handler(int);
+
+/* helpers for user inputs */
 char *get_user_input();
+
+/* helpers errors handling */
+/* 0 : memalloc_error */
+void memalloc_error(void);
+
+void (*handle_error[])(void) = {
+    memalloc_error
+};
 
 #endif /* _MINISHELL_H_ */
